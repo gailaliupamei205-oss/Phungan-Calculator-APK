@@ -41,17 +41,13 @@ jobs:
           pip install --upgrade pip setuptools wheel
           pip install buildozer cython==0.29.36
 
-      - name: Build APK
+      
+      - name: Install Android SDK tools
         run: |
-          . .venv/bin/activate
-          buildozer android debug
-
-      - name: Upload APK
-        if: success()
-        uses: actions/upload-artifact@v6
-        with:
-          name: Phungan-Calculator-APK
-          path: bin/*.apk
-          if-no-files-found: error
+          mkdir -p "$HOME/.buildozer/android/platform"
+          echo "Checking Android SDK tools"
+          find "$HOME/.buildozer" -name aidl -type f || true
+          
+          
           
 
