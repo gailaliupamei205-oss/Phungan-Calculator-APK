@@ -10,6 +10,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -41,13 +42,20 @@ jobs:
           pip install --upgrade pip setuptools wheel
           pip install buildozer cython==0.29.36
 
-      
-      - name: Install Android SDK tools
+      - name: Build APK
         run: |
-          mkdir -p "$HOME/.buildozer/android/platform"
-          echo "Checking Android SDK tools"
-          find "$HOME/.buildozer" -name aidl -type f || true
+          . .venv/bin/activate
+          yes | buildozer android debug
+
+      - name: Upload APK
+        if: success()
+        uses: actions/upload-artifact@v6
+        with:
+          name: Phungan-Calculator-APK
+          path: bin/*.apk
+          if-no-files-found: error
           
           
           
+
 
